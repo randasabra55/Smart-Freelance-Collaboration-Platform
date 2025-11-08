@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body>
+    <h2>🔔 Notifications Test</h2>
+    <div id="messages"></div>
+
+    <script>
+        // هنا ضيفي لينك الـ Hub من API بتاعتك
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7092/hubs/notifications", {
+                withCredentials: true
+            })
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        // لما توصلك رسالة من السيرفر
+        connection.on("NotificationReceived", (message) => {
+            const div = document.createElement("div");
+            div.textContent = "📩 " + message;
+            document.getElementById("messages").appendChild(div);
+        });
+
+        // نبدأ الاتصال
+        async function start() {
+            try {
+                await connection.start();
+                console.log("Connected to SignalR hub ✅");
+            } catch (err) {
+                console.error("Connection failed ❌:", err);
+                setTimeout(start, 3000);
+            }
+        }
+
+        start();
+    </script>
+</body>
+</html>

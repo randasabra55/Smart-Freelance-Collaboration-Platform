@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test SignalR Collaboration Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h2>💬 SignalR Collaboration Room Test</h2>
+
+    <label>User ID:</label>
+    <input id="userId" placeholder="مثلاً 1" />
+    <br><br>
+
+    <label>Room ID:</label>
+    <input id="roomId" placeholder="مثلاً 10" />
+    <br><br>
+
+    <button id="connectBtn">🔗 Connect</button>
+    <button id="joinBtn" disabled>👥 Join Room</button>
+
+    <hr>
+
+    <div id="chatBox" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;"></div>
+    <br>
+
+    <input id="msgInput" placeholder="اكتب رسالة..." style="width: 70%;" />
+    <button id="sendBtn" disabled>📤 Send</button>
+
+    <script>
+    let connection;
+
+    document.getElementById("connectBtn").addEventListener("click", async () => {
+      const userId = document.getElementById("userId").value;
+      if (!userId) {
+        alert("من فضلك اكتب UserId!");
+        return;
+      }
+
+      // هنا اكتبي ال URL الصحيح للـ Hub عندك
+      // مثال: https://localhost:7092/collaborationHub
+      connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7092/collaborationHub", {
+          accessTokenFactory: () => userId // بنبعت الـ userId كـ UserIdentifier بسيطة للاختبار
+        })
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+      connection.on("MessageReceived", (message) => {
+        const box = document.getElementById("chatBox");
+        box.innerHTML += `<div><b>${message.senderId}:</b> ${message.content}</div>`;
+        box.scrollTop = box.scrollHeight;
+      });
+
+      try {
+        await connection.start();
+        alert("✅ Connected successfully!");
+        document.getElementById("joinBtn").disabled = false;
+        document.getElementById("sendBtn").disabled = false;
+      } catch (err) {
+        alert("❌ Connection failed: " + err);
+      }
+    });
+
+    document.getElementById("joinBtn").addEventListener("click", async () => {
+      const roomId = document.getElementById("roomId").value;
+      if (!roomId) {
+        alert("من فضلك اكتب RoomId!");
+        return;
+      }
+
+      await connection.invoke("JoinRoom", parseInt(roomId));
+      alert("✅ Joined Room " + roomId);
+    });
+
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+      const roomId = document.getElementById("roomId").value;
+      const msg = document.getElementById("msgInput").value;
+      if (!msg) return;
+
+      await connection.invoke("SendMessage", parseInt(roomId), msg);
+      document.getElementById("msgInput").value = "";
+    });
+    </script>
+</body>
+</html>
