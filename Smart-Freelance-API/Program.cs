@@ -60,7 +60,9 @@ builder.Services.AddHostedService<PaymentConsumer>();
 builder.Services.AddHostedService<CompletionPaymentConsumer>();
 ///////////////////////////////////////////////////////////////////////
 #endregion
+
 builder.Services.AddHttpClient();
+
 #region settup of paymob
 
 builder.Services.AddPaymobCashIn(config =>

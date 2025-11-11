@@ -4,8 +4,9 @@ using MediatR;
 using Smart_Freelance_Core.Features.Auth.Commands.RegisterFeature.Extensions;
 using Smart_Freelance_Core.Features.Auth.Dto;
 using Smart_Freelance_Data.Enums;
-using Smart_Freelance_Infrastructure.Common.Helpers;
+//using Smart_Freelance_Infrastructure.Common.Helpers;
 using Smart_Freelance_Infrastructure.Common.Responses;
+using Smart_Freelance_Infrastructure.Common.Utility;
 using Smart_Freelance_Service.Abstracts;
 
 namespace Smart_Freelance_Core.Features.Auth.Commands.RegisterFeature.Handler;
