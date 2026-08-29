@@ -53,11 +53,14 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 
 //regiser jobs
+
+//هعملهم كومنت دلوقتى عشان اعمل بابلش ع سمارتر 
 builder.Services.AddHostedService<ProjectCreationConsumerJob>();
 builder.Services.AddHostedService<ProposalNotificationConsumerJob>();
 builder.Services.AddHostedService<CollaborationRoomConsumer>();
 builder.Services.AddHostedService<PaymentConsumer>();
 builder.Services.AddHostedService<CompletionPaymentConsumer>();
+
 ///////////////////////////////////////////////////////////////////////
 #endregion
 
@@ -91,19 +94,35 @@ var app = builder.Build();
 
 
 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+//    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+//    await RoleSeeder.SeedAsync(roleManager);
+//    await UserSeeder.SeedAsync(userManager);
+//}
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var services = scope.ServiceProvider;
+
+    // 1. Apply all pending migrations
+    var context = services.GetRequiredService<Context>();
+    await context.Database.MigrateAsync();
+
+    // 2. Seed Roles
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
     await RoleSeeder.SeedAsync(roleManager);
+
+    // 3. Seed Users
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     await UserSeeder.SeedAsync(userManager);
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseHangfireDashboard("/hangfire");
 
