@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart-Freelance-API", "Smart-Freelance-API\Smart-Freelance-API.csproj", "{167C1A17-915F-4A51-883E-97E3166CBD62}"
 EndProject
@@ -12,6 +12,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart-Freelance-Service", "Smart-Freelance-Service\Smart-Freelance-Service.csproj", "{BEB24DF2-9591-462F-A2C5-6841B34337F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart-Freelance-Infrastructure", "Smart-Freelance-Infrastructure\Smart-Freelance-Infrastructure.csproj", "{410C3688-8EB6-4494-89C8-27986BD05A9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C010D899-16B4-41F1-9B32-1F0CC5A59570}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.yml = deploy.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C010D899-16B4-41F1-9B32-1F0CC5A59570} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9369CF4D-650B-4D1F-B305-4B520B80DCA0}
