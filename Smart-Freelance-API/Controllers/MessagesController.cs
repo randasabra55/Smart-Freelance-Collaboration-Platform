@@ -16,5 +16,15 @@ namespace Smart_Freelance_API.Controllers
                 return Results.BadRequest(result.Error);
             return Results.Ok(result.Data);
         }
+
+        ////////////////////////////////////////////////////////
+        [HttpGet]
+        public async Task<IResult> SetMessages([FromQuery] GetMessagesQuery query)
+        {
+            var result = await Mediator.Send(query);
+            if (!result.IsSuccess)
+                return Results.BadRequest(result.Error);
+            return Results.Ok(result.Data);
+        }
     }
 }
